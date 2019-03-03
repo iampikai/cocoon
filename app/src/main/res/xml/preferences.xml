@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory android:title="Privacy &amp; Security">
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="ad_toggle"
+            android:summary="Some ads track site visits,even if you don't click the ads"
+            android:title="Block ad trackers" />
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="analytics_toggle"
+            android:summary="Used to collect,analyze and measure activities like tapping and scrolling"
+            android:title="Block analytics trackers" />
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="social_toggle"
+            android:summary="Embedded on sites to track your visits and to display functionality like share buttons"
+            android:title="Block social trackers" />
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="script_toggle"
+            android:summary="Pages may load faster, but may also behave unexpectedly"
+            android:title="Enable JavaScript" />
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="safebrowse_toggle"
+            android:summary="Protect you and your device from dangerous sites"
+            android:title="Safe Browsing" />
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="popup_toggle"
+            android:summary="To block unnecessary pop ups"
+            android:title="Enable Pop Ups" />
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Cookie &amp; Cache Management">
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="privatebrowse_toggle"
+            android:summary=""
+            android:title="Private Browsing" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="Location &amp; Services">
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="track_toggle"
+            android:summary="To protect you from geo tagging"
+            android:title="Do Not Track" />
+
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="useragent_toggle"
+            android:summary="Masks your user-agent and protects your online identity"
+            android:title="Custom UserAgent" />
+
+
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Search Settings">
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="autocomplete_toggle"
+            android:title="Local Auto-Complete" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
