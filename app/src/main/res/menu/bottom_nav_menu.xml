@@ -11,7 +11,7 @@
         android:title="Home" />
 
     <item
-        android:id="@+id/open_options"
+        android:id="@+id/open_settings"
         android:icon="@android:drawable/ic_menu_preferences"
         android:title="Settings" />
 

@@ -14,22 +14,23 @@ import android.widget.Toast;
 
 import com.iampikai.cocoon.MainActivity;
 import com.iampikai.cocoon.R;
-import com.iampikai.cocoon.database.AppData;
+import com.iampikai.cocoon.TabManager;
 import com.iampikai.cocoon.datamodels.TabDataModel;
 
 import java.util.ArrayList;
 
-public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.ViewHolder> {
+public class TabSwitcherAdapter extends RecyclerView.Adapter<TabSwitcherAdapter.ViewHolder> {
 
     private ArrayList<TabDataModel> mData;
     private LayoutInflater mInflater;
     private AdapterView.OnItemClickListener mClickListener;
     private MainActivity activity;
+
     // data is passed into the constructor
-    public OverviewAdapter(Context context, MainActivity activity) {
+    public TabSwitcherAdapter(Context context, MainActivity activity) {
         this.mInflater = LayoutInflater.from(context);
-        this.mData = AppData.getAppData(context).getTabDataModelArrayList();
-        this.activity=activity;
+        this.mData = TabManager.getInstance().getTabList();
+        this.activity = activity;
     }
 
     @Override
@@ -42,8 +43,8 @@ public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.ViewHo
     // binds the data to the TextView in each cell
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-        if(position==0){
-            ViewGroup.MarginLayoutParams layoutParams=(ViewGroup.MarginLayoutParams) holder
+        if (position == 0) {
+            ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) holder
                     .titleView.getLayoutParams();
             //layoutParams.topMargin=140;
         }
@@ -53,9 +54,9 @@ public class OverviewAdapter extends RecyclerView.Adapter<OverviewAdapter.ViewHo
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(activity, "Item: "+position, Toast.LENGTH_SHORT).show();
-                AppData.currentTab=position;
-                TabDataModel tdm=AppData.getAppData(activity).getTabDataModelArrayList().get(position);
+                Toast.makeText(activity, "Item: " + position, Toast.LENGTH_SHORT).show();
+                TabManager.getInstance().setCurrentTab(position);
+                TabDataModel tdm = TabManager.getInstance().getTabList().get(position);
                 activity.getWebView().loadUrl(tdm.getUrl());
                 activity.getToolbarTitle().setText(tdm.getTitle());
                 activity.getToolbarUrl().setText(tdm.getUrl());

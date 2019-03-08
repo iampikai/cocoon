@@ -58,7 +58,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:lines="1"
-                    android:text="Title"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 
@@ -68,7 +67,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:lines="1"
-                    android:text="https://www.google.com/search?google"
                     android:textSize="15sp" />
             </LinearLayout>
 

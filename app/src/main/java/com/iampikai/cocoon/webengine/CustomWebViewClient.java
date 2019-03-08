@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.iampikai.cocoon.MainActivity;
 import com.iampikai.cocoon.database.Rawdata;
+import com.iampikai.cocoon.datamodels.TabDataModel;
 import com.iampikai.cocoon.settings.Settings;
 
 import java.io.ByteArrayInputStream;
@@ -47,6 +48,7 @@ public class CustomWebViewClient extends android.webkit.WebViewClient {
     public void onPageFinished(WebView view, String url) {
         super.onPageFinished(view, url);
         activity.getToolbarUrl().setText(url);
+        activity.saveCurrentTabToList();
     }
 
     @Override

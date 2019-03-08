@@ -63,7 +63,7 @@ public class NestedWebView extends WebView implements NestedScrollingChild {
     @Override
     public void loadUrl(String url) {
         if (url.equals("about:blank")) {
-            super.loadData("<html></html>", "text/html", "UTF-8");
+            super.loadUrl("url");
         } else {
             String currentURL = url.replace("http://", "")
                     .replace("https://", "")

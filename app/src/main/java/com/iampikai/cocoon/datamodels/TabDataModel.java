@@ -9,6 +9,14 @@ public class TabDataModel {
     private String title, url;
     private WebBackForwardList backForwardList;
 
+    public void saveCurrentState(Bitmap favicon, Bitmap snapshot, String title, String url, WebBackForwardList backForwardList) {
+        this.favicon = favicon;
+        this.snapshot = snapshot;
+        this.title = title;
+        this.url = url;
+        this.backForwardList = backForwardList;
+    }
+
     public TabDataModel(Bitmap favicon, Bitmap snapshot, String title, String url) {
         this.favicon = favicon;
         this.snapshot = snapshot;
@@ -52,11 +60,11 @@ public class TabDataModel {
         return backForwardList;
     }
 
-    public void saveCurrentState(Bitmap favicon, Bitmap snapshot, String title, String url, WebBackForwardList backForwardList) {
-        this.favicon = favicon;
-        this.snapshot = snapshot;
-        this.title = title;
-        this.url = url;
-        this.backForwardList = backForwardList;
+    @Override
+    public String toString() {
+        return "TabDataModel{" +
+                "title='" + title + '\'' +
+                ", url='" + url + '\'' +
+                '}';
     }
 }

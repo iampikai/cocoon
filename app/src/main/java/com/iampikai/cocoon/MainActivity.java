@@ -1,12 +1,14 @@
 package com.iampikai.cocoon;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.Build;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -23,55 +25,42 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.iampikai.cocoon.adapters.OverviewAdapter;
-import com.iampikai.cocoon.database.AppData;
+import com.iampikai.cocoon.adapters.TabSwitcherAdapter;
 import com.iampikai.cocoon.datamodels.TabDataModel;
 import com.iampikai.cocoon.settings.Settings;
 import com.iampikai.cocoon.webengine.NestedWebView;
 
 public class MainActivity extends AppCompatActivity {
 
+    TabManager tabManager;
     SharedPreferences preferences;
-    public static Boolean images_toggle;
     Dialog tabDialog;
     RecyclerView tabRecycler;
     Toolbar toolbar;
     View editUrlView, displayUrlView;
-    ImageView clearUrl, overviewNewtab, overviewBack;
+    ImageView clearUrl;
     EditText urlEdit;
     ProgressBar progressBar;
-    NestedWebView webView;
+    static NestedWebView webView;
     TextView toolbarTitle, toolbarUrl;
     BottomNavigationView bottomNavigationView;
+    FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        webView = new NestedWebView(getApplicationContext());
-        webView = webView.getWebView(R.id.webview, MainActivity.this);
+
+        tabManager = TabManager.getInstance();
         setUpPreferences();
         viewsInit();
-
 
     }
 
     private void viewsInit() {
 
-//        AppBarLayout appBarLayout = findViewById(R.id.appbar);
-//        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-//            @Override
-//            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-//                //Log.e("Offset", Integer.toString(verticalOffset));
-//                if (verticalOffset == -143) {
-//                    fab.hide();
-//                    //fab.animate().translationY(fab.getHeight() + fab.getPaddingBottom());
-//                } else if (verticalOffset == 0) {
-//                    fab.show();
-//                    //fab.animate().translationY(0);
-//                }
-//            }
-//        });
+        webView = new NestedWebView(getApplicationContext());
+        webView = webView.getWebView(R.id.webview, MainActivity.this);
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         toolbar = findViewById(R.id.toolbar);
@@ -93,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+
         displayUrlView.setOnClickListener(displayUrlViewListener);
         clearUrl.setOnClickListener(clearUrlViewListener);
         progressBar = toolbar.findViewById(R.id.progressBar);
@@ -105,18 +95,22 @@ public class MainActivity extends AppCompatActivity {
                 int id = menuItem.getItemId();
                 switch (id) {
                     case R.id.new_tab:
-                        newTab();
+//                        saveCurrentTabToList();
+                        tabManager.newTab();
+                        tabManager.loadTab(tabManager.getCurrentTab());
+                        return true;
+                    case R.id.open_settings:
+                        Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+                        startActivity(intent);
                         return true;
                 }
-
                 return false;
             }
         });
 
-    }
-
-    public void openWebView(String url) {
-
+        Log.e("INITIAL_STATE", String.valueOf(tabManager.getCurrentTab()));
+        tabManager.newTab();
+        tabManager.loadTab(tabManager.getCurrentTab());
     }
 
     private void setUpPreferences() {
@@ -173,46 +167,16 @@ public class MainActivity extends AppCompatActivity {
         preferences.registerOnSharedPreferenceChangeListener(listener);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.home_overflow, menu);
-//        return super.onCreateOptionsMenu(menu);
-//    }
-
     public void openTabOverview(View view) {
-        TabDataModel tdm = AppData.getAppData(getApplicationContext()).getTabDataModelArrayList().get(AppData.currentTab);
-
-        tdm.saveCurrentState(webView.getFavicon(), screenshot(webView, 0.25f), webView.getTitle(), webView.getUrl(), webView.copyBackForwardList());
 
         tabDialog = new Dialog(this, R.style.AppTheme);
-        tabDialog.setContentView(R.layout.tab_dialog);
+        tabDialog.setContentView(R.layout.tab_switcher_dialog);
         tabRecycler = tabDialog.findViewById(R.id.recycle);
-//        overviewBack = tabdialog.findViewById(R.id.overview_back);
-//        overviewNewtab = tabdialog.findViewById(R.id.overview_newtab);
-//        overviewCounter = tabdialog.findViewById(R.id.overview_counter);
-//        overviewBack.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                tabdialog.dismiss();
-//
-//            }
-//        });
-//        overviewNewtab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                tabdialog.dismiss();
-//                newTab();
-//            }
-//        });
+        fab = tabDialog.findViewById(R.id.fab);
 
-        final OverviewAdapter overviewAdapter = new OverviewAdapter(getApplicationContext(), MainActivity.this);
+        final TabSwitcherAdapter tabSwitcherAdapter = new TabSwitcherAdapter(getApplicationContext(), MainActivity.this);
         tabRecycler.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-        tabRecycler.setAdapter(overviewAdapter);
+        tabRecycler.setAdapter(tabSwitcherAdapter);
         ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
@@ -221,44 +185,63 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
-                int position = viewHolder.getAdapterPosition(); //swiped position
-
+                int index = viewHolder.getAdapterPosition(); //swiped position
                 if (direction == ItemTouchHelper.RIGHT) {//swipe right
-
-                    AppData.getAppData(getApplicationContext()).getTabDataModelArrayList().remove(position);
-                    overviewAdapter.notifyItemRemoved(position);
-                    overviewAdapter.notifyDataSetChanged();
-
-                    Log.e("Position", Integer.toString(position));
-
+                    tabManager.closeTab(index);
+                    tabSwitcherAdapter.notifyItemRemoved(index);
+                    tabSwitcherAdapter.notifyDataSetChanged();
                 }
-
             }
         };
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(tabRecycler);
         tabDialog.show();
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                saveCurrentTabToList();
+                tabManager.newTab();
+                tabManager.loadTab(tabManager.getCurrentTab());
+                tabDialog.dismiss();
+            }
+        });
+        fab.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                tabManager.closeAllTab();
+                tabDialog.dismiss();
+                return true;
+            }
+        });
     }
 
-    public void newTab() {
-        int newTabIndex = AppData.getAppData(getApplicationContext()).getTabDataModelArrayList().size();
-        AppData.getAppData(getApplicationContext()).getTabDataModelArrayList().add(new TabDataModel(null, null, "newtab", "about:blank"));
-        Log.e("Overview-loadurl", AppData.getAppData(getApplicationContext()).getTabDataModelArrayList().get(newTabIndex).getUrl());
-        Log.e("Overview-size", String.valueOf(Integer.valueOf(AppData.getAppData(getApplicationContext()).getTabDataModelArrayList().size())));
-        Log.e("Overview-newindex", String.valueOf(newTabIndex));
-        AppData.currentTab = newTabIndex;
-        webView.loadUrl(AppData.getAppData(getApplicationContext()).getTabDataModelArrayList().get(newTabIndex).getUrl());
-        toolbarTitle.setText("New Tab");
-        toolbarUrl.setText("Make a search");
+    public void saveCurrentTabToList() {
+        TabDataModel tabDataModel = tabManager.getTabList().get(tabManager.getCurrentTab());
+        tabDataModel.saveCurrentState(webView.getFavicon(),
+                screenshot(webView, 0.25f),
+                webView.getTitle(),
+                webView.getUrl(),
+                webView.copyBackForwardList());
     }
-
 
     View.OnClickListener displayUrlViewListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             displayUrlView.setVisibility(View.GONE);
             editUrlView.setVisibility(View.VISIBLE);
+        }
+    };
 
+    View.OnClickListener clearUrlViewListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (urlEdit.getText().toString().equals("") || urlEdit.getText().toString().equals(null)) {
+                displayUrlView.setVisibility(View.VISIBLE);
+                editUrlView.setVisibility(View.GONE);
+            } else {
+                urlEdit.setText("");
+            }
         }
     };
 
@@ -275,36 +258,6 @@ public class MainActivity extends AppCompatActivity {
         return null;
     }
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        int id = item.getItemId();
-//        switch (id) {
-//            case R.id.settings_menu:
-//                Intent intent = new Intent(this, SettingsActivity.class);
-//                startActivity(intent);
-//                return true;
-//            case R.id.reset:
-//                resetSettings();
-//                Toast.makeText(this, "Factory settings restored", Toast.LENGTH_SHORT).show();
-//                return true;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
-
-    View.OnClickListener clearUrlViewListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (urlEdit.getText().toString().equals("") || urlEdit.getText().toString().equals(null)) {
-                Log.e("Toolbar-clearUrl", "already clean");
-                displayUrlView.setVisibility(View.VISIBLE);
-                editUrlView.setVisibility(View.GONE);
-            } else {
-                Log.e("Toolbar-clearUrl", "now clean");
-                urlEdit.setText("");
-            }
-        }
-    };
-
     public ProgressBar getProgressBar() {
         return progressBar;
     }
@@ -317,7 +270,7 @@ public class MainActivity extends AppCompatActivity {
         return toolbarUrl;
     }
 
-    public NestedWebView getWebView() {
+    public static NestedWebView getWebView() {
         return webView;
     }
 
@@ -325,18 +278,9 @@ public class MainActivity extends AppCompatActivity {
         return tabDialog;
     }
 
-    public void resetSettings() {
-        Settings.setPopupsEnabled(false);
-        Settings.setPrivateToggle(true);
-        Settings.setUserAgentToggle(false);
-        Settings.setTrackEnabled(true);
-        Settings.setAutoCompleteToggle(false);
-        Settings.setSafebrowseEnabled(true);
-        Settings.setScriptBlock(false);
-        Settings.setAdsBlock(true);
-        Settings.setSocialBlock(true);
-        Settings.setAnalyticsBlock(true);
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
 }
