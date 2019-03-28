@@ -41,18 +41,15 @@ public class TabManager {
         else
             currentTab = tabList.size();
         tabList.add(new TabDataModel(null, null, "New Tab", "about:blank"));
-        Log.e("TAB_LIST",tabList.toString());
     }
 
     public void loadTab(int index) {
-        Log.e("LOADED",String.valueOf(index));
         String url = tabList.get(index).getUrl();
-        NestedWebView webView = MainActivity.getWebView();
+        NestedWebView webView = MainActivity.webView;
         webView.loadUrl(url);
     }
 
     public void closeTab(int index) {
-        Log.e("CLOSED_TAB", String.valueOf(index));
         if (tabList.size() == 1) {
             tabList.remove(index);
             newTab();

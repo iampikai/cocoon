@@ -41,13 +41,13 @@ public class CustomWebViewClient extends android.webkit.WebViewClient {
     @Override
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
         super.onPageStarted(view, url, favicon);
-        activity.getToolbarUrl().setText(url);
+        MainActivity.toolbarUrl.setText(url);
     }
 
     @Override
     public void onPageFinished(WebView view, String url) {
         super.onPageFinished(view, url);
-        activity.getToolbarUrl().setText(url);
+        MainActivity.toolbarUrl.setText(url);
         activity.saveCurrentTabToList();
     }
 
@@ -96,7 +96,7 @@ public class CustomWebViewClient extends android.webkit.WebViewClient {
     @Override
     public void onReceivedSslError(WebView view, final SslErrorHandler handler, SslError error) {
         String message, title = "Warning! ";
-        Log.i("onSSLError", "SSL error recieved");
+        Log.e("onSSLError", "SSL error recieved");
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         switch (error.getPrimaryError()) {
             case SslError.SSL_UNTRUSTED:

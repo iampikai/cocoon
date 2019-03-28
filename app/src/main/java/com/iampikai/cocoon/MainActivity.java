@@ -34,17 +34,18 @@ public class MainActivity extends AppCompatActivity {
 
     TabManager tabManager;
     SharedPreferences preferences;
-    Dialog tabDialog;
+
     RecyclerView tabRecycler;
     Toolbar toolbar;
     View editUrlView, displayUrlView;
     ImageView clearUrl;
     EditText urlEdit;
-    ProgressBar progressBar;
-    static NestedWebView webView;
-    TextView toolbarTitle, toolbarUrl;
     BottomNavigationView bottomNavigationView;
     FloatingActionButton fab;
+    public static Dialog tabDialog;
+    public static ProgressBar progressBar;
+    public static NestedWebView webView;
+    public static TextView toolbarTitle, toolbarUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         tabManager = TabManager.getInstance();
-        setUpPreferences();
+        //setUpPreferences();
         viewsInit();
 
     }
@@ -107,65 +108,61 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-
-        Log.e("INITIAL_STATE", String.valueOf(tabManager.getCurrentTab()));
         tabManager.newTab();
         tabManager.loadTab(tabManager.getCurrentTab());
     }
 
-    private void setUpPreferences() {
-        preferences = android.preference.PreferenceManager.
-                getDefaultSharedPreferences(this);
-        SharedPreferences.OnSharedPreferenceChangeListener listener
-                = new SharedPreferences.OnSharedPreferenceChangeListener() {
-            @Override
-            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
-                Log.e("JavaScriptEnabled", Boolean.toString(webView.getSettings().getJavaScriptEnabled()));
-                switch (s) {
-                    case "ad_toggle":
-                        Settings.setAdsBlock(sharedPreferences.getBoolean(s, Settings.isAdsBlock()));
-                        break;
-                    case "analytics_toggle":
-                        Settings.setAnalyticsBlock(sharedPreferences.getBoolean(s, Settings.isAnalyticsBlock()));
-                        break;
-                    case "social_toggle":
-                        Settings.setSocialBlock(sharedPreferences.getBoolean(s, Settings.isSocialBlock()));
-                        break;
-                    case "script_toggle":
-                        Log.e("VALUE", Boolean.toString(webView.getSettings().getJavaScriptEnabled()));
-                        Settings.setScriptBlock(sharedPreferences.getBoolean(s, Settings.isScriptBlock()));
-                        webView.getSettings().setJavaScriptEnabled(Settings.isScriptBlock());
-                        break;
-                    case "safebrowse_toggle":
-                        Settings.setSafebrowseEnabled(sharedPreferences.getBoolean(s, Settings.isSafebrowseEnabled()));
-                        if (Build.VERSION.SDK_INT >= 26)
-                            webView.getSettings().setSafeBrowsingEnabled(Settings.isSafebrowseEnabled());
-                        break;
-                    case "popup_toggle":
-                        Settings.setPopupsEnabled(sharedPreferences.getBoolean(s, Settings.isPopupsEnabled()));
-                        webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(Settings.isPopupsEnabled());
-                        break;
-                    case "privatebrowse_toggle":
-                        Settings.setPrivateToggle(sharedPreferences.getBoolean(s, Settings.isPrivateToggle()));
-//                        webView.getSettings().setpr;
-                        break;
-                    case "useragent_toggle":
-                        Settings.setUserAgentToggle(sharedPreferences.getBoolean(s, Settings.isUserAgentToggle()));
-                        webView.getSettings().setGeolocationEnabled(Settings.isUserAgentToggle());
-                        break;
-                    case "track_toggle":
-                        Settings.setTrackEnabled(sharedPreferences.getBoolean(s, Settings.isTrackEnabled()));
-                        webView.getSettings().setGeolocationEnabled(Settings.isTrackEnabled());
-                        break;
-                    case "autocomplete_toggle":
-                        Settings.setAutoCompleteToggle(sharedPreferences.getBoolean(s, Settings.isAutoCompleteToggle()));
-//                        webView.getSettings().setGeolocationEnabled(Settings.isAutoCompleteToggle());
-                        break;
-                }
-            }
-        };
-        preferences.registerOnSharedPreferenceChangeListener(listener);
-    }
+//    private void setUpPreferences() {
+//        preferences = android.preference.PreferenceManager.
+//                getDefaultSharedPreferences(this);
+//        SharedPreferences.OnSharedPreferenceChangeListener listener
+//                = new SharedPreferences.OnSharedPreferenceChangeListener() {
+//            @Override
+//            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String s) {
+//                switch (s) {
+//                    case "ad_toggle":
+//                        Settings.setAdsBlock(sharedPreferences.getBoolean(s, Settings.isAdsBlock()));
+//                        break;
+//                    case "analytics_toggle":
+//                        Settings.setAnalyticsBlock(sharedPreferences.getBoolean(s, Settings.isAnalyticsBlock()));
+//                        break;
+//                    case "social_toggle":
+//                        Settings.setSocialBlock(sharedPreferences.getBoolean(s, Settings.isSocialBlock()));
+//                        break;
+//                    case "script_toggle":
+//                        Settings.setScriptBlock(sharedPreferences.getBoolean(s, Settings.isScriptBlock()));
+//                        webView.getSettings().setJavaScriptEnabled(Settings.isScriptBlock());
+//                        break;
+//                    case "safebrowse_toggle":
+//                        Settings.setSafebrowseEnabled(sharedPreferences.getBoolean(s, Settings.isSafebrowseEnabled()));
+//                        if (Build.VERSION.SDK_INT >= 26)
+//                            webView.getSettings().setSafeBrowsingEnabled(Settings.isSafebrowseEnabled());
+//                        break;
+//                    case "popup_toggle":
+//                        Settings.setPopupsEnabled(sharedPreferences.getBoolean(s, Settings.isPopupsEnabled()));
+//                        webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(Settings.isPopupsEnabled());
+//                        break;
+//                    case "privatebrowse_toggle":
+//                        Settings.setPrivateToggle(sharedPreferences.getBoolean(s, Settings.isPrivateToggle()));
+////                        webView.getSettings().setpr;
+//                        break;
+//                    case "useragent_toggle":
+//                        Settings.setUserAgentToggle(sharedPreferences.getBoolean(s, Settings.isUserAgentToggle()));
+//                        webView.getSettings().setGeolocationEnabled(Settings.isUserAgentToggle());
+//                        break;
+//                    case "track_toggle":
+//                        Settings.setTrackEnabled(sharedPreferences.getBoolean(s, Settings.isTrackEnabled()));
+//                        webView.getSettings().setGeolocationEnabled(Settings.isTrackEnabled());
+//                        break;
+//                    case "autocomplete_toggle":
+//                        Settings.setAutoCompleteToggle(sharedPreferences.getBoolean(s, Settings.isAutoCompleteToggle()));
+////                        webView.getSettings().setGeolocationEnabled(Settings.isAutoCompleteToggle());
+//                        break;
+//                }
+//            }
+//        };
+//        preferences.registerOnSharedPreferenceChangeListener(listener);
+//    }
 
     public void openTabOverview(View view) {
 
@@ -258,29 +255,37 @@ public class MainActivity extends AppCompatActivity {
         return null;
     }
 
-    public ProgressBar getProgressBar() {
-        return progressBar;
-    }
-
-    public TextView getToolbarTitle() {
-        return toolbarTitle;
-    }
-
-    public TextView getToolbarUrl() {
-        return toolbarUrl;
-    }
-
-    public static NestedWebView getWebView() {
-        return webView;
-    }
-
-    public Dialog getTabdialog() {
-        return tabDialog;
-    }
+//    public ProgressBar getProgressBar() {
+//        return progressBar;
+//    }
+//
+//    public TextView getToolbarTitle() {
+//        return toolbarTitle;
+//    }
+//
+//    public TextView getToolbarUrl() {
+//        return toolbarUrl;
+//    }
+//
+//    public static NestedWebView getWebView() {
+//        return webView;
+//    }
+//
+//    public Dialog getTabdialog() {
+//        return tabDialog;
+//    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (webView.canGoBack()) {
+            webView.goBack();
+        } else
+            super.onBackPressed();
     }
 
 }

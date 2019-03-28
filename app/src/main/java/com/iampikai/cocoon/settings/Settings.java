@@ -1,44 +1,17 @@
 package com.iampikai.cocoon.settings;
 
 public class Settings {
+
     private static boolean scriptBlock = true,
-            adsBlock = true, analyticsBlock = true,
-            socialBlock = true, safebrowseEnabled = true,
-            trackEnabled = true, popupsEnabled = false,
-            privateToggle = true, userAgentToggle = false,
+            adsBlock = true,
+            analyticsBlock = true,
+            socialBlock = true,
+            safeBrowseEnabled = true,
+            trackEnabled = true,
+            popupsEnabled = false,
+            privateToggle = true,
+            userAgentToggle = false,
             autoCompleteToggle = false;
-
-    public static boolean isPopupsEnabled() {
-        return popupsEnabled;
-    }
-
-    public static void setPopupsEnabled(boolean popupsEnabled) {
-        Settings.popupsEnabled = popupsEnabled;
-    }
-
-    public static boolean isPrivateToggle() {
-        return privateToggle;
-    }
-
-    public static void setPrivateToggle(boolean privateToggle) {
-        Settings.privateToggle = privateToggle;
-    }
-
-    public static boolean isUserAgentToggle() {
-        return userAgentToggle;
-    }
-
-    public static void setUserAgentToggle(boolean userAgentToggle) {
-        Settings.userAgentToggle = userAgentToggle;
-    }
-
-    public static boolean isAutoCompleteToggle() {
-        return autoCompleteToggle;
-    }
-
-    public static void setAutoCompleteToggle(boolean autoCompleteToggle) {
-        Settings.autoCompleteToggle = autoCompleteToggle;
-    }
 
     public static boolean isScriptBlock() {
         return scriptBlock;
@@ -72,12 +45,12 @@ public class Settings {
         Settings.socialBlock = socialBlock;
     }
 
-    public static boolean isSafebrowseEnabled() {
-        return safebrowseEnabled;
+    public static boolean isSafeBrowseEnabled() {
+        return safeBrowseEnabled;
     }
 
-    public static void setSafebrowseEnabled(boolean safebrowseEnabled) {
-        Settings.safebrowseEnabled = safebrowseEnabled;
+    public static void setSafeBrowseEnabled(boolean safeBrowseEnabled) {
+        Settings.safeBrowseEnabled = safeBrowseEnabled;
     }
 
     public static boolean isTrackEnabled() {
@@ -86,5 +59,37 @@ public class Settings {
 
     public static void setTrackEnabled(boolean trackEnabled) {
         Settings.trackEnabled = trackEnabled;
+    }
+
+    public static boolean isPopupsEnabled() {
+        return popupsEnabled;
+    }
+
+    public static void setPopupsEnabled(boolean popupsEnabled) {
+        Settings.popupsEnabled = popupsEnabled;
+    }
+
+    public static boolean isPrivateToggle() {
+        return privateToggle;
+    }
+
+    public static void setPrivateToggle(boolean privateToggle) {
+        Settings.privateToggle = privateToggle;
+    }
+
+    public static boolean isUserAgentToggle() {
+        return userAgentToggle;
+    }
+
+    public static void setUserAgentToggle(boolean userAgentToggle) {
+        Settings.userAgentToggle = userAgentToggle;
+    }
+
+    public static boolean isAutoCompleteToggle() {
+        return autoCompleteToggle;
+    }
+
+    public static void setAutoCompleteToggle(boolean autoCompleteToggle) {
+        Settings.autoCompleteToggle = autoCompleteToggle;
     }
 }

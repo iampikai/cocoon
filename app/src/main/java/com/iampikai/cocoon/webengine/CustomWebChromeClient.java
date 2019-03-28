@@ -25,12 +25,12 @@ public class CustomWebChromeClient extends android.webkit.WebChromeClient {
     @Override
     public void onProgressChanged(WebView view, int newProgress) {
         super.onProgressChanged(view, newProgress);
-        activity.getProgressBar().setProgress(newProgress);
+        MainActivity.progressBar.setProgress(newProgress);
         if (newProgress == 100) {
-            activity.getProgressBar().setVisibility(View.GONE);
+            MainActivity.progressBar.setVisibility(View.GONE);
         } else {
-            if (activity.getProgressBar().getVisibility() == View.GONE) {
-                activity.getProgressBar().setVisibility(View.VISIBLE);
+            if (MainActivity.progressBar.getVisibility() == View.GONE) {
+                MainActivity.progressBar.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -38,7 +38,7 @@ public class CustomWebChromeClient extends android.webkit.WebChromeClient {
     @Override
     public void onReceivedTitle(WebView view, String title) {
         super.onReceivedTitle(view, title);
-        activity.getToolbarTitle().setText(title);
+        MainActivity.toolbarTitle.setText(title);
     }
 
     @Override
