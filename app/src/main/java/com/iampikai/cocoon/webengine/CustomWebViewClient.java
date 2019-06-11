@@ -3,8 +3,8 @@ package com.iampikai.cocoon.webengine;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.net.http.SslError;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import android.util.Log;
 import android.webkit.SafeBrowsingResponse;
 import android.webkit.SslErrorHandler;
@@ -16,7 +16,6 @@ import android.widget.Toast;
 
 import com.iampikai.cocoon.MainActivity;
 import com.iampikai.cocoon.database.Rawdata;
-import com.iampikai.cocoon.datamodels.TabDataModel;
 import com.iampikai.cocoon.settings.Settings;
 
 import java.io.ByteArrayInputStream;
