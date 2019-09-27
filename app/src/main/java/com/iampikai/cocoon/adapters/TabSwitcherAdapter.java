@@ -57,7 +57,7 @@ public class TabSwitcherAdapter extends RecyclerView.Adapter<TabSwitcherAdapter.
         tdm = tabManager.getTabList().get(position);
         tabManager.setCurrentTab(position);
         MainActivity.webView.loadUrl(tdm.getUrl());
-        MainActivity.toolbarTitle.setText(tdm.getTitle());
+//        MainActivity.toolbarTitle.setText(tdm.getTitle());
         MainActivity.toolbarUrl.setText(tdm.getUrl());
         MainActivity.tabDialog.dismiss();
     }

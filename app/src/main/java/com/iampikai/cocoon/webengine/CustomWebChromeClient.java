@@ -38,7 +38,7 @@ public class CustomWebChromeClient extends android.webkit.WebChromeClient {
     @Override
     public void onReceivedTitle(WebView view, String title) {
         super.onReceivedTitle(view, title);
-        MainActivity.toolbarTitle.setText(title);
+//        MainActivity.toolbarTitle.setText(title);
     }
 
     @Override

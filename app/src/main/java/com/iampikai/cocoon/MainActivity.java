@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
         webView = new NestedWebView(getApplicationContext());
         webView = webView.getWebView(R.id.webview, MainActivity.this);
 
-        bottomNavigationView = findViewById(R.id.bottom_navigation);
+//        bottomNavigationView = findViewById(R.id.bottom_navigation);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -84,28 +84,28 @@ public class MainActivity extends AppCompatActivity {
 
         displayUrlView.setOnClickListener(displayUrlViewListener);
         clearUrl.setOnClickListener(clearUrlViewListener);
-        progressBar = toolbar.findViewById(R.id.progressBar);
-        toolbarTitle = toolbar.findViewById(R.id.toolbar_title);
+        progressBar = findViewById(R.id.progressBar);
+//        toolbarTitle = toolbar.findViewById(R.id.toolbar_title);
         toolbarUrl = toolbar.findViewById(R.id.toolbar_url);
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                int id = menuItem.getItemId();
-                switch (id) {
-                    case R.id.new_tab:
-//                        saveCurrentTabToList();
-                        tabManager.newTab();
-                        tabManager.loadTab(tabManager.getCurrentTab());
-                        return true;
-                    case R.id.open_settings:
-                        Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-                        startActivity(intent);
-                        return true;
-                }
-                return false;
-            }
-        });
+//        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+//            @Override
+//            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+//                int id = menuItem.getItemId();
+//                switch (id) {
+//                    case R.id.new_tab:
+////                        saveCurrentTabToList();
+//                        tabManager.newTab();
+//                        tabManager.loadTab(tabManager.getCurrentTab());
+//                        return true;
+//                    case R.id.open_settings:
+//                        Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+//                        startActivity(intent);
+//                        return true;
+//                }
+//                return false;
+//            }
+//        });
         tabManager.newTab();
         tabManager.loadTab(tabManager.getCurrentTab());
     }
